@@ -9,3 +9,6 @@
 
 (define greet
   (lambda (name) (display (string-append "Hello, " name))))
+
+;;; macro to comment a whole s-expression such #_ in clojure
+#;(define blablabla "whiskasache")
