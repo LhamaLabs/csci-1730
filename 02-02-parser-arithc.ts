@@ -1,4 +1,47 @@
 /**
+ * This parser is designed to parse mathematical expressions represented as strings into a structured format that can be evaluated or manipulated further. The expressions can include numbers and the operators '+', and '*'. The parser uses a recursive descent parsing strategy, which starts from the highest level of the grammar and works its way down, recursively parsing each component of the expression.
+ *
+ * Here's a high-level overview of how the parser works:
+ *
+ * 1. Tokenization: The input string is broken down into tokens using a regular expression. Tokens can be parentheses, operators, or numbers.
+ *
+ * 2. Parsing: The tokens are parsed into an abstract syntax tree (AST) using several parsing functions, each responsible for parsing a different part of the grammar. The `parseExpr` function is the main driver of the parsing process, and it delegates to `parseNumber` or itself depending on the current token.
+ *
+ * The grammar that this parser recognizes is as follows:
+ *
+ * Expr -> Number
+ *      |  ( + Expr Expr* )
+ *      |  ( * Expr Expr* )
+ *
+ * This can be visualized as follows:
+ *
+ * Expr
+ *  |
+ *  ----> Number
+ *  |
+ *  ----> ( + Expr Expr* )
+ *  |
+ *  ----> ( * Expr Expr* )
+ *
+ * Each node in the AST is an object that includes the kind of the node (e.g., 'numC', 'plusC', 'multC') and any additional information needed (e.g., the number for 'numC', the arguments for 'plusC' and 'multC').
+ *
+ * For example, the string '(+ 1 2)' would be parsed into the following AST:
+ *
+ * {
+ *   kind: 'plusC',
+ *   args: [
+ *     { kind: 'numC', n: 1 },
+ *     { kind: 'numC', n: 2 }
+ *   ]
+ * }
+ *
+ * This AST can then be evaluated, printed, or manipulated in other ways.
+ */
+
+// ------
+// CODE
+
+/**
  * Represents an expression which can be a number, addition, or multiplication.
  */
 type Expr = NumC | PlusC | MultC;
