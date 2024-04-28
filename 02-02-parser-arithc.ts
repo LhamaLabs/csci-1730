@@ -1,28 +1,54 @@
+/**
+ * Represents an expression which can be a number, addition, or multiplication.
+ */
 type Expr = NumC | PlusC | MultC;
 
+/**
+ * Represents a number.
+ */
 interface NumC {
   kind: 'numC';
   n: number;
 }
 
+/**
+ * Represents an addition operation.
+ */
 interface PlusC {
   kind: 'plusC';
   args: Expr[];
 }
 
+/**
+ * Represents a multiplication operation.
+ */
 interface MultC {
   kind: 'multC';
   args: Expr[];
 }
 
+/**
+ * Parses a string into an expression.
+ * @param s - The string to parse.
+ * @returns The parsed expression.
+ */
 function parse(s: string): Expr {
   const tokens = s.match(/\(|\)|\+|\*|\d+/g) || [];
   let current = 0;
 
+  /**
+   * Peeks at the current token.
+   * @returns The current token.
+   */
   function peek() {
     return tokens[current];
   }
 
+  /**
+   * Consumes the current token if it matches the expected token.
+   * @param token - The expected token.
+   * @throws Will throw an error if the current token does not match the expected token.
+   */
   function consume(token: string) {
     if (peek() === token) {
       current++;
@@ -31,12 +57,20 @@ function parse(s: string): Expr {
     }
   }
 
+  /**
+   * Parses a number.
+   * @returns The parsed number.
+   */
   function parseNumber(): NumC {
     const num = parseInt(peek() || "0");
     consume(peek() || "");
     return { kind: 'numC', n: num };
   }
 
+  /**
+   * Parses an expression.
+   * @returns The parsed expression.
+   */
   function parseExpr(): Expr {
     if (peek() === '(') {
       consume('(');
@@ -68,6 +102,11 @@ function parse(s: string): Expr {
   return parseExpr();
 }
 
+/**
+ * Prints an expression as code.
+ * @param expr - The expression to print.
+ * @returns The printed expression.
+ */
 function printExprAsCode(expr: Expr): string {
     switch (expr.kind) {
       case 'numC':
